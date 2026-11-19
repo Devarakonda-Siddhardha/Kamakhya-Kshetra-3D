@@ -1,0 +1,206 @@
+[gd_scene load_steps=17 format=3]
+
+[ext_resource type="Script" path="res://scripts/kshetra_manager.gd" id="1_mgr"]
+[ext_resource type="Script" path="res://scripts/player_controller.gd" id="2_player"]
+[ext_resource type="Script" path="res://scripts/landmark_hotspot.gd" id="3_hotspot"]
+[ext_resource type="PackedScene" path="res://scenes/hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" path="res://assets/models/kamakhya_temple.glb" id="5_temple"]
+[ext_resource type="PackedScene" path="res://assets/models/saubhagya_kunda.glb" id="6_kunda"]
+[ext_resource type="PackedScene" path="res://assets/models/torana_gate.glb" id="7_torana"]
+[ext_resource type="PackedScene" path="res://assets/models/sub_shrine.glb" id="8_shrine"]
+[ext_resource type="PackedScene" path="res://assets/models/nilachal_terrain.glb" id="9_terrain"]
+[ext_resource type="PackedScene" path="res://assets/models/sanctum_interior.glb" id="10_sanctum"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat_1"]
+sky_top_color = Color(0.16, 0.2, 0.38, 1)
+sky_horizon_color = Color(0.88, 0.48, 0.26, 1)
+ground_bottom_color = Color(0.12, 0.18, 0.1, 1)
+ground_horizon_color = Color(0.45, 0.35, 0.25, 1)
+
+[sub_resource type="Sky" id="Sky_1"]
+sky_material = SubResource("SkyMat_1")
+
+[sub_resource type="Environment" id="Env_1"]
+background_mode = 2
+sky = SubResource("Sky_1")
+ambient_light_source = 3
+ambient_light_energy = 0.45
+tonemap_mode = 2
+glow_enabled = true
+glow_intensity = 0.6
+fog_enabled = true
+fog_light_color = Color(0.75, 0.56, 0.42, 1)
+fog_density = 0.004
+
+[sub_resource type="CapsuleShape3D" id="PlayerCap_1"]
+radius = 0.42
+height = 1.75
+
+[sub_resource type="BoxShape3D" id="CourtyardFloor_1"]
+size = Vector3(140, 1, 140)
+
+[sub_resource type="SphereShape3D" id="HotspotSphere_1"]
+radius = 5.5
+
+[node name="KamakhyaKshetraWorld" type="Node3D"]
+script = ExtResource("1_mgr")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.788, -0.23, 0.57, 0, 0.927, 0.375, -0.616, -0.295, 0.73, 25, 32, 22)
+light_color = Color(1, 0.68, 0.36, 1)
+light_energy = 1.6
+shadow_enabled = true
+
+[node name="HUD" parent="." instance=ExtResource("4_hud")]
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 1.4, -14)
+script = ExtResource("2_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("PlayerCap_1")
+
+[node name="Head" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Player/Head"]
+fov = 72.0
+far = 400.0
+
+[node name="GroundCollider" type="StaticBody3D" parent="."]
+
+[node name="FloorShape" type="CollisionShape3D" parent="GroundCollider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("CourtyardFloor_1")
+
+[node name="Architecture" type="Node3D" parent="."]
+
+[node name="NilachalTerrain" parent="Architecture" instance=ExtResource("9_terrain")]
+
+[node name="KamakhyaMainTemple" parent="Architecture" instance=ExtResource("5_temple")]
+
+[node name="SanctumInterior" parent="Architecture" instance=ExtResource("10_sanctum")]
+
+[node name="SaubhagyaKunda" parent="Architecture" instance=ExtResource("6_kunda")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -15.5)
+
+[node name="WestToranaGate" parent="Architecture" instance=ExtResource("7_torana")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -23, 0, 0)
+
+[node name="BhuvaneshwariSummitShrine" parent="Architecture" instance=ExtResource("8_shrine")]
+transform = Transform3D(1.15, 0, 0, 0, 1.15, 0, 0, 0, 1.15, 26, 7.8, 24)
+
+[node name="TaraShrine" parent="Architecture" instance=ExtResource("8_shrine")]
+transform = Transform3D(0.85, 0, 0, 0, 0.85, 0, 0, 0, 0.85, -18, 0, 14)
+
+[node name="KameshwaraShrine" parent="Architecture" instance=ExtResource("8_shrine")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 20, 0, -12)
+
+[node name="DiyaLights" type="Node3D" parent="."]
+
+[node name="DiyaLight_1" type="OmniLight3D" parent="DiyaLights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.2, -9)
+light_color = Color(1, 0.62, 0.22, 1)
+light_energy = 2.4
+omni_range = 12.0
+
+[node name="DiyaLight_2" type="OmniLight3D" parent="DiyaLights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1.2, -9)
+light_color = Color(1, 0.62, 0.22, 1)
+light_energy = 2.4
+omni_range = 12.0
+
+[node name="DiyaLight_3" type="OmniLight3D" parent="DiyaLights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.2, -22)
+light_color = Color(1, 0.62, 0.22, 1)
+light_energy = 2.4
+omni_range = 12.0
+
+[node name="DiyaLight_4" type="OmniLight3D" parent="DiyaLights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 3.2, 0)
+light_color = Color(1, 0.65, 0.26, 1)
+light_energy = 2.2
+omni_range = 11.0
+
+[node name="Landmarks" type="Node3D" parent="."]
+
+[node name="GarbhagrihaHotspot" type="Area3D" parent="Landmarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 1.5, -5.5)
+script = ExtResource("3_hotspot")
+site_id = "garbhagriha"
+title = "Garbhagriha — Nilachala Shikhara"
+subtitle = "Heart of Kamakhya Shakti Peetha"
+description = "Rebuilt in 1565 by Koch King Nara Narayana, the Garbhagriha defines the Nilachala architectural style: a cruciform carved stone bada crowned by a bulbous ribbed beehive brick dome, ringed by twelve angashikharas and a golden kalasha with trishul. Within lies a natural rock fissure fed by an underground spring."
+
+[node name="Shape" type="CollisionShape3D" parent="Landmarks/GarbhagrihaHotspot"]
+shape = SubResource("HotspotSphere_1")
+
+[node name="CalantaHotspot" type="Area3D" parent="Landmarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1.5, -5.5)
+script = ExtResource("3_hotspot")
+site_id = "calanta"
+title = "Calanta (Twelve-Pillared Hall)"
+subtitle = "Passage Between Sanctum & Saubhagya Kunda"
+description = "Resting on twelve carved stone pillars, the Calanta houses the movable utsava image of Devi Kameshwari and royal stone inscriptions of King Nara Narayana and Chilarai. Its northern doorway opens directly toward the sacred Saubhagya Kunda."
+
+[node name="Shape" type="CollisionShape3D" parent="Landmarks/CalantaHotspot"]
+shape = SubResource("HotspotSphere_1")
+
+[node name="PancharatnaHotspot" type="Area3D" parent="Landmarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 1.5, -5.5)
+script = ExtResource("3_hotspot")
+site_id = "pancharatna"
+title = "Pancharatna Mandapa"
+subtitle = "Five-Domed Ritual Chamber"
+description = "Crowned by four corner Nilachala domes flanking a larger central dome, the Pancharatna connects the Calanta to the western Natamandira and hosts devotional chants and temple rituals."
+
+[node name="Shape" type="CollisionShape3D" parent="Landmarks/PancharatnaHotspot"]
+shape = SubResource("HotspotSphere_1")
+
+[node name="NatamandiraHotspot" type="Area3D" parent="Landmarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5, 1.5, -5.5)
+script = ExtResource("3_hotspot")
+site_id = "natamandira"
+title = "Natamandira"
+subtitle = "Apsidal Hall of Sacred Music & Dance"
+description = "Added during the Ahom period, the western Natamandira features a sweeping curved apsidal roof and wide arched portals where traditional music and temple dances are performed."
+
+[node name="Shape" type="CollisionShape3D" parent="Landmarks/NatamandiraHotspot"]
+shape = SubResource("HotspotSphere_1")
+
+[node name="SaubhagyaKundaHotspot" type="Area3D" parent="Landmarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.5, -15.5)
+script = ExtResource("3_hotspot")
+site_id = "saubhagya_kunda"
+title = "Saubhagya Kunda"
+subtitle = "Sacred Stepped Tank of Fortune"
+description = "Located immediately north of the main temple courtyard, this rectangular stepped stone tank reflects the terracotta shikhara and golden kalasha. Devotees light earthen diyas along its steps during dusk aarti and Ambubachi Mela."
+
+[node name="Shape" type="CollisionShape3D" parent="Landmarks/SaubhagyaKundaHotspot"]
+shape = SubResource("HotspotSphere_1")
+
+[node name="ToranaHotspot" type="Area3D" parent="Landmarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 1.5, 0)
+script = ExtResource("3_hotspot")
+site_id = "torana"
+title = "Western Stone Torana"
+subtitle = "Pilgrim Gateway & Temple Bells"
+description = "Carved granite gateway marking entry into the inner Kamakhya courtyard. Pilgrims ring the suspended brass bells as they ascend from the Nilachal hillside steps."
+
+[node name="Shape" type="CollisionShape3D" parent="Landmarks/ToranaHotspot"]
+shape = SubResource("HotspotSphere_1")
+
+[node name="TaraHotspot" type="Area3D" parent="Landmarks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 1.5, 14)
+script = ExtResource("3_hotspot")
+site_id = "tara_shrine"
+title = "Dasamahavidya Shrines & Nilachal Hill"
+subtitle = "Sacred Landscape of Ten Wisdom Goddesses"
+description = "Kamakhya Kshetra encompasses the entire Nilachal Hill (Brahma, Shiva, and Varaha hills), home to the Ten Mahavidyas (Tara, Kali, Bhuvaneshwari, Bhairavi, Chinnamasta, Dhumavati, Bagalamukhi) and the Pancha Shiva shrines overlooking the Brahmaputra River."
+
+[node name="Shape" type="CollisionShape3D" parent="Landmarks/TaraHotspot"]
+shape = SubResource("HotspotSphere_1")

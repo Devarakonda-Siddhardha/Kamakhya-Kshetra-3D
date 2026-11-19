@@ -1,0 +1,111 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="TopBar" type="PanelContainer" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 14.0
+offset_right = -16.0
+offset_bottom = 58.0
+
+[node name="Margin" type="MarginContainer" parent="TopBar"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 8
+
+[node name="HBox" type="HBoxContainer" parent="TopBar/Margin"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="TopBar/Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "KAMAKHYA KSHETRA — Nilachal Hill, Assam"
+
+[node name="TimeLabel" type="Label" parent="TopBar/Margin/HBox"]
+layout_mode = 2
+text = "Time [T]: Golden Dusk"
+
+[node name="Spacer" type="Control" parent="TopBar/Margin/HBox"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+
+[node name="DiscoveryLabel" type="Label" parent="TopBar/Margin/HBox"]
+layout_mode = 2
+text = "Sacred Sites Discovered: 0 / 7"
+
+[node name="ControlsHint" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = -38.0
+offset_right = 560.0
+offset_bottom = -12.0
+text = "WASD: Walk  |  Shift: Sprint  |  Space: Jump  |  E: Inspect Shrine  |  T: Cycle Lighting  |  Esc: Cursor"
+
+[node name="PromptPanel" type="PanelContainer" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -220.0
+offset_top = -104.0
+offset_right = 220.0
+offset_bottom = -64.0
+
+[node name="Margin" type="MarginContainer" parent="PromptPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 8
+
+[node name="PromptLabel" type="Label" parent="PromptPanel/Margin"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "Press [E] to inspect"
+
+[node name="LorePanel" type="PanelContainer" parent="."]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -410.0
+offset_top = -170.0
+offset_right = -18.0
+offset_bottom = 170.0
+
+[node name="Margin" type="MarginContainer" parent="LorePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 16
+
+[node name="VBox" type="VBoxContainer" parent="LorePanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="LorePanel/Margin/VBox"]
+layout_mode = 2
+text = "Sacred Site Title"
+
+[node name="Subtitle" type="Label" parent="LorePanel/Margin/VBox"]
+modulate = Color(0.95, 0.72, 0.36, 1)
+layout_mode = 2
+text = "Architectural Subtitle"
+
+[node name="Body" type="Label" parent="LorePanel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Site description."
+autowrap_mode = 3
