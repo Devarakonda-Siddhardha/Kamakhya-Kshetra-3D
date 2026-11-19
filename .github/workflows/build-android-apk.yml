@@ -17,9 +17,12 @@ jobs:
       - name: Setup Godot Export Templates & Debug Keystore
         run: |
           mkdir -p "$HOME/.local/share/godot/export_templates" "$HOME/.config/godot" builds
-          if [ -d "/root/.local/share/godot/export_templates/4.3.stable" ] && [ ! -e "$HOME/.local/share/godot/export_templates/4.3.stable" ]; then
-            cp -r /root/.local/share/godot/export_templates/4.3.stable "$HOME/.local/share/godot/export_templates/4.3.stable"
-          fi
+          for src in /root/.local/share/godot/export_templates/4.3.stable /root/.local/share/godot/templates/4.3.stable; do
+            if [ -d "$src" ] && [ ! -e "$HOME/.local/share/godot/export_templates/4.3.stable" ]; then
+              cp -r "$src" "$HOME/.local/share/godot/export_templates/4.3.stable"
+            fi
+          done
+          ls -la "$HOME/.local/share/godot/export_templates/4.3.stable" || find /root /usr /opt -maxdepth 5 -name "android_debug.apk" 2>/dev/null || true
           keytool -keyalg RSA -genkeypair -alias androiddebugkey -keypass android \
             -keystore /tmp/debug.keystore -storepass android \
             -dname "CN=Android Debug,O=Android,C=US" -validity 9999 -deststoretype pkcs12
