@@ -24,9 +24,12 @@ jobs:
             -keystore /tmp/debug.keystore -storepass android \
             -dname "CN=Android Debug,O=Android,C=US" -validity 9999 -deststoretype pkcs12
           SDK_PATH="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/lib/android-sdk}}"
+          JAVA_PATH="${JAVA_HOME:-$(dirname "$(dirname "$(readlink -f "$(which javac || which java)")")")}"
+          echo "Using ANDROID_SDK=${SDK_PATH} JAVA_SDK=${JAVA_PATH}"
           cat > "$HOME/.config/godot/editor_settings-4.tres" <<EOF
           [gd_resource type="EditorSettings" format=3]
           [resource]
+          export/android/java_sdk_path = "${JAVA_PATH}"
           export/android/android_sdk_path = "${SDK_PATH}"
           export/android/debug_keystore = "/tmp/debug.keystore"
           export/android/debug_keystore_user = "androiddebugkey"
